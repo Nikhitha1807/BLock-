@@ -1,12 +1,163 @@
-import React, { useEffect } from 'react'
-import Axios from 'axios'
-import Files from '../components/Files';
-import Upload from '../components/Upload';
-export default function Home() {
+import React, { useEffect, useState } from 'react'
+import Axios from "axios"
+export default function Home({ account, contract, provider }) {
+    const [files, setFiles] = useState([]);
+    const [file, setFile] = useState(null);
+    const [ipfshash, setipfshash] = useState(null);
+    const [temp, setTemp] = useState(null);
+    const [access, setAccess] = useState(null);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (file) {
+            try {
+                const formData = new FormData();
+                formData.append("file", file);
+                const resFile = await Axios({
+                    method: "post",
+                    url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                    data: formData,
+                    headers: {
+                        pinata_api_key: "",
+                        pinata_secret_api_key: "",
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+                const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
+                console.log(resFile.data.IpfsHash);
+                console.log(resFile.data);
+                setipfshash(resFile.data.IpfsHash);
+
+                const signer = contract.connect(provider.getSigner());
+                signer.add(account, ImgHash);
+
+
+            } catch (e) {
+                alert("Can't upload file to Pinata");
+            }
+        }
+        alert(" Image Uploaded Successfully ");
+
+        setFile(null);
+    };
+    const getHashFromUrl = (url) => {
+        const hash = url.split("/")[2];
+        return hash;
+    }
+    const getFiles = async (temp) => {
+        let access = await contract.shareAccess()
+        setAccess(access)
+        let dataArray;
+        if (temp)
+            dataArray = await contract.display(temp)
+        else
+            dataArray = await contract.display(account)
+        setFiles(dataArray)
+        // if (address) {
+        //     dataArray = await contract.display(address);
+        // }
+        // else {
+        //     dataArray = await contract.display(account);
+        // }
+        // const Otheraddress = document.querySelector(".address").value;
+        // try {
+        //   if (Otheraddress) {
+        //     dataArray = await contract.getURLs(Otheraddress);
+        //   } else {
+        //     dataArray = await contract.getURLs(account);
+        //   }
+        // } catch (e) {
+        //   alert("You don't have access");
+        // }
+        // const isEmpty = Object.keys(dataArray).length === 0;
+        // if (!isEmpty) {
+        //     const str = dataArray.toString();
+        //     const str_array = str.split(",");
+
+        //     const images = str_array.map((item, i) => {
+        //         return (
+        //             <a href={item} key={i} target="_blank">
+        //                 <img
+        //                     key={i}
+        //                     src={`https://yellow-explicit-minnow-290.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=fsSFXEoDsWvTQ6js7XX32o4N3rAqPfv9Ky4xMuYKSI-eWG2IMduKDmVAPxwbuOqs`}
+        //                     alt="new"
+        //                     className="image-list"
+        //                 ></img>
+        //             </a>
+        //         );
+        //     });
+        //     setData(images);
+        // } else {
+        //     alert("No image to display");
+        // }
+    };
+    useEffect(() => {
+        if (!contract) return;
+        getFiles()
+    }, [contract])
+
+
     return (
-        <div className='max-w-5xl mx-auto p-5 flex flex-col gap-10'>
-            <Upload/>
-            <Files />
+        <div className='p-4 flex flex-col gap-5'>
+            <div className='justify-between flex'>
+                <input
+                    onChange={(e) => setFile(e.target.files[0])}
+                    type="file" className="file-input w-full max-w-xs" />
+                <button
+                    disabled={!file}
+                    onClick={handleSubmit}
+                    className="btn">Upload</button>
+            </div>
+            <div className='justify-between flex-grow flex gap-5'>
+                <input
+                    placeholder='Enter Address To View Images'
+                    onChange={(e) =>
+                        setTemp(e.target.value)}
+                    type="text" className="input w-full " />
+                <button
+                    disabled={!temp}
+                    onClick={() => {
+                        getFiles(temp)
+                    }}
+                    className="btn">Fetch</button>
+            </div>
+            <div className='grid grid-cols-2 gap-2.5'>
+                {files.length > 0 &&
+                    files.map((item, i) => {
+                        return (
+                            <a href={item}
+                                target='_blank'
+                                key={item}>
+
+                                <img
+
+                                    src={`https://yellow-explicit-minnow-290.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=fsSFXEoDsWvTQ6js7XX32o4N3rAqPfv9Ky4xMuYKSI-eWG2IMduKDmVAPxwbuOqs`}
+                                    alt="" />
+                            </a>
+                        )
+                    })
+                }
+            </div>
+
+            {access && <div className='flex flex-col gap-5'>
+                <h1 className='text-2xl'>Shared Access</h1>
+                <div className='flex flex-col gap-5'>
+                    {access.length > 0 &&
+                        access.map((item, i) => {
+                            console.log(item.user, item.access);
+                            return (
+                                <div key={item} className='flex justify-between'>
+                                    <p>{item}</p>
+
+                                    <button disabled={!item.access} className='btn btn-primary'>Revoke</button>
+
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+            }
+
         </div>
     )
 }
