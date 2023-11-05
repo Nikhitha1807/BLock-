@@ -32,7 +32,8 @@ function App() {
         const address = await signer.getAddress();
         setAccount(address);
         //deployed address of the contract to sepolia
-        let contractAddress = "0x588Fef4C8602dbfFF5Fd2C774e9C39A2625F14d8";
+        // let contractAddress = "0x588Fef4C8602dbfFF5Fd2C774e9C39A2625F14d8";
+        let contractAddress = "0x8176F8122EDd9b530E8A8259628FDcE0e01115EC";
 
         const contract = new ethers.Contract(
           contractAddress,

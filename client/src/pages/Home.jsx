@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Axios from "axios"
+import { CopyIcon, ShareIcon, EyeIcon, Eye } from "lucide-react"
 export default function Home({ account, contract, provider }) {
     const [files, setFiles] = useState([]);
     const [file, setFile] = useState(null);
     const [ipfshash, setipfshash] = useState(null);
+    const [shareTo, setShareTo] = useState("");
+    const [shareHash, setShareHash] = useState(null);
+    const handleShare = async () => {
+        await contract.allow(shareTo, shareHash);
+        document.getElementById('my_modal_1').close();
+    }
     const [temp, setTemp] = useState(null);
     const [access, setAccess] = useState(null);
     const handleSubmit = async (e) => {
@@ -17,8 +24,8 @@ export default function Home({ account, contract, provider }) {
                     url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
                     data: formData,
                     headers: {
-                        pinata_api_key: "",
-                        pinata_secret_api_key: "",
+                        pinata_api_key: "57f2e5b4c0f34b9a104a",
+                        pinata_secret_api_key: "a954679ff0d7e0a490404e44323573e5c6c118d957eb1cdf123afcd769806b96",
                         "Content-Type": "multipart/form-data",
                     },
                 });
@@ -32,6 +39,7 @@ export default function Home({ account, contract, provider }) {
 
 
             } catch (e) {
+                console.log(e);
                 alert("Can't upload file to Pinata");
             }
         }
@@ -51,6 +59,7 @@ export default function Home({ account, contract, provider }) {
             dataArray = await contract.display(temp)
         else
             dataArray = await contract.display(account)
+        console.log(dataArray);
         setFiles(dataArray)
         // if (address) {
         //     dataArray = await contract.display(address);
@@ -120,8 +129,47 @@ export default function Home({ account, contract, provider }) {
                     }}
                     className="btn">Fetch</button>
             </div>
+            <div className="overflow-x-auto">
+                <table className="table border">
+                    {/* head */}
+                    <thead>
+                        <tr>
+                            <th>IPFS</th>
+                            <th>SHARE</th>
+                            <th>PREVIEW</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            files.length > 0 && files.map((item, i) => {
+                                return (
+
+                                    <tr>
+                                        <td>{item}</td>
+                                        <td>
+                                            <ShareIcon
+                                                onClick={() => {
+                                                    setShareHash(item)
+                                                    document.getElementById('my_modal_1').showModal()
+                                                }}
+                                                className='cursor-pointer' />
+
+                                        </td>
+                                        <td>
+                                            <a target='_blank' href={`https://yellow-explicit-minnow-290.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=fsSFXEoDsWvTQ6js7XX32o4N3rAqPfv9Ky4xMuYKSI-eWG2IMduKDmVAPxwbuOqs`} >
+
+
+                                                <EyeIcon />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                    </tbody>
+                </table>
+            </div>
             <div className='grid grid-cols-2 gap-2.5'>
-                {files.length > 0 &&
+                {/* {files.length > 0 &&
                     files.map((item, i) => {
                         return (
                             <a href={item}
@@ -135,10 +183,12 @@ export default function Home({ account, contract, provider }) {
                             </a>
                         )
                     })
-                }
+                } */}
+
+
             </div>
 
-            {access && <div className='flex flex-col gap-5'>
+            {/* {access && <div className='flex flex-col gap-5'>
                 <h1 className='text-2xl'>Shared Access</h1>
                 <div className='flex flex-col gap-5'>
                     {access.length > 0 &&
@@ -156,7 +206,26 @@ export default function Home({ account, contract, provider }) {
                     }
                 </div>
             </div>
-            }
+            } */}
+            <dialog id="my_modal_1" className="modal">
+                <div className="modal-box">
+                    <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+
+                    <h3 className="font-bold text-lg">Share Access</h3>
+                    <p className="py-2">Enter Wallet Address Of Reciever</p>
+                    <p className='py-2'>{shareHash}</p>
+                    <input type="text"
+                        onChange={(e) => setShareTo(e.target.value)}
+                        placeholder="0x00....000"
+                        className="input w-full max-w" />
+                    <button
+                        onClick={handleShare}
+                        className='btn btn-primary mt-3'>Share Access</button>
+                </div>
+            </dialog>
 
         </div>
     )
