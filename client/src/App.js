@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 import Uploadabi from './artifacts/contracts/Upload.sol/Upload.json';
 import Header from './components/Header';
+import Landing from './pages/Landing';
 
 
 function App() {
@@ -57,7 +58,9 @@ function App() {
 
         <Routes>
 
-          <Route path='/' element={<Home
+          <Route path='/' element={<Landing
+          />} />
+          <Route path='/cloud' element={<Home
             contract={contract}
             account={account}
             provider={provider}
