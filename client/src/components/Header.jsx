@@ -39,24 +39,7 @@ export default function Header({ account, contract }) {
             {/* Open the modal using document.getElementById('ID').showModal() method */}
             {/* <button className="btn" >open modal</button> */}
 
-            <dialog id="my_modal_2" className="modal">
-                <div className="modal-box">
-                    <form method="dialog">
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
 
-                    <h3 className="font-bold text-lg">Revoke Access</h3>
-                    <p className="py-4">Enter Wallet Address To Be Revoked</p>
-                    <input type="text"
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="0x00....000"
-                        className="input w-full max-w" />
-                    <button
-                        onClick={handleRevoke}
-                        className='btn btn-primary mt-3'>Revoke Access</button>
-                </div>
-            </dialog>
         </div>
     )
 }

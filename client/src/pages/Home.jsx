@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Axios from "axios"
-import { CopyIcon, ShareIcon, EyeIcon, Eye } from "lucide-react"
+import { CopyIcon, ShareIcon, EyeIcon, Eye, LucideBan } from "lucide-react"
 export default function Home({ account, contract, provider }) {
     const [files, setFiles] = useState([]);
     const [file, setFile] = useState(null);
@@ -10,6 +10,10 @@ export default function Home({ account, contract, provider }) {
     const handleShare = async () => {
         await contract.allow(shareTo, shareHash);
         document.getElementById('my_modal_1').close();
+    }
+    const handleRevoke = async () => {
+        await contract.disallow(shareTo, shareHash);
+        document.getElementById('my_modal_2').close();
     }
     const [temp, setTemp] = useState(null);
     const [access, setAccess] = useState(null);
@@ -136,12 +140,13 @@ export default function Home({ account, contract, provider }) {
                         <tr>
                             <th>IPFS</th>
                             <th>SHARE</th>
+                            <th>REVOKE</th>
                             <th>PREVIEW</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            files.length > 0 && files.map((item, i) => {
+                            files.length > 0 && files.filter((item) => item !== '').map((item, i)                             => {
                                 return (
 
                                     <tr>
@@ -153,6 +158,18 @@ export default function Home({ account, contract, provider }) {
                                                     document.getElementById('my_modal_1').showModal()
                                                 }}
                                                 className='cursor-pointer' />
+
+                                        </td>
+                                        <td>
+
+
+
+                                            <LucideBan
+                                            className='cursor-pointer'
+                                                onClick={() => {
+                                                    setShareHash(item)
+                                                    document.getElementById('my_modal_2').showModal()
+                                                }} />
 
                                         </td>
                                         <td>
@@ -207,6 +224,25 @@ export default function Home({ account, contract, provider }) {
                 </div>
             </div>
             } */}
+            <dialog id="my_modal_2" className="modal">
+                <div className="modal-box">
+                    <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+
+                    <h3 className="font-bold text-lg">Revoke Access</h3>
+                    <p className="py-2">Enter Wallet Address To Be Revoked</p>
+                    <div className="py-2">{shareHash}</div>
+                    <input type="text"
+                        onChange={(e) => setShareTo(e.target.value)}
+                        placeholder="0x00....000"
+                        className="input w-full max-w" />
+                    <button
+                        onClick={handleRevoke}
+                        className='btn btn-primary mt-3'>Revoke Access</button>
+                </div>
+            </dialog>
             <dialog id="my_modal_1" className="modal">
                 <div className="modal-box">
                     <form method="dialog">
