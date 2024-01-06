@@ -3,5 +3,9 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "hardhat": "^2.12.7"
+  },
+  "dependencies": {
+    "lucide-react": "^0.292.0",
+    "react-rough-notation": "^1.0.5"
   }
 }

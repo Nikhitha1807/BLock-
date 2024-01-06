@@ -1,0 +1,160 @@
+/* src/components/HomeComponent.css */
+
+.home {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    
+    
+  }
+  
+  .header {
+    background-color: #1d1e1f;
+    color: #0d0c0c;
+    padding: 20px 0;
+    font-size: 16px;
+  }
+  
+  .header ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    font-size: 16px;
+  }
+  
+  .header li {
+    margin: 0 20px;
+    font-size: 16px;
+  }
+  
+  .header a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .main-content {
+    padding: 20px;
+    
+    border: 10px solid #161616; /* Add a 1px solid border around the main content */
+  padding: 20px; 
+  background-image: url('https://media.istockphoto.com/id/911033734/pt/vetorial/blockchain-abstract-background.jpg?s=612x612&w=0&k=20&c=OscHT0_1JxAGXgeie2BBj99UmwY62kEszQi_xy5Hx7Y='); /* Replace 'your-image-url.jpg' with the URL of your background image */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  
+  }
+  
+  .hero {
+    
+    background-size: cover;
+    color: #fff;
+    padding: 100px;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 18px;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    font-size: 18px;
+    background-color: #0b0b0b;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .cta-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .features {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 0;
+  }
+  
+  .features .feature {
+    width: 30%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  
+  .content-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .image-container {
+    flex: 1; /* Takes up all available horizontal space */
+  }
+  
+  .text-container {
+    flex: 2; /* Takes up twice as much horizontal space as the image container */
+  }
+/* HomeComponent.css */
+/* Define a CSS keyframe animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply the animation to the image when it's initially loaded */
+.image-container img {
+  animation: fadeIn 1s; /* 1s duration */
+}
+.card-container {
+  flex: 2; /* Takes up twice as much horizontal space as the image container */
+  display: flex;
+  font-size: 18px;
+  justify-content: center; /* Center the card horizontally */
+  align-items: center; /* Center the card vertically */
+}
+
+.card-container {
+  flex: 2;
+  display: flex;
+  font-size: 18px;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, transform 0.3s; /* Add transitions for smooth effects */
+}
+
+.card {
+  background-color: #ce1919;
+  padding: 20px;
+  font-size: 14px !important; /* Adjust the font size to your preference */
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: rgb(12, 12, 12);
+  width: 500px; /* Set the width to your desired value */
+  height: 300px;
+  transition: background-color 0.3s, transform 0.3s; /* Add transitions for smooth effects */
+
+  /* Define the hover animation */
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #db0f0f; /* Change the background color on hover */
+  transform: scale(0.05); /* Apply a scale effect on hover */
+}

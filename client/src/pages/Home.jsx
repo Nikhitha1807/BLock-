@@ -28,8 +28,8 @@ export default function Home({ account, contract, provider }) {
                     url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
                     data: formData,
                     headers: {
-                        pinata_api_key: "57f2e5b4c0f34b9a104a",
-                        pinata_secret_api_key: "a954679ff0d7e0a490404e44323573e5c6c118d957eb1cdf123afcd769806b96",
+                        pinata_api_key: "b124ac35cfba198b2157",
+                        pinata_secret_api_key: "45339e662e571b0a3cf45eeabd2bb1813022fc52ab2941d8dca24c920b254159",
                         "Content-Type": "multipart/form-data",
                     },
                 });
@@ -65,43 +65,7 @@ export default function Home({ account, contract, provider }) {
             dataArray = await contract.display(account)
         console.log(dataArray);
         setFiles(dataArray)
-        // if (address) {
-        //     dataArray = await contract.display(address);
-        // }
-        // else {
-        //     dataArray = await contract.display(account);
-        // }
-        // const Otheraddress = document.querySelector(".address").value;
-        // try {
-        //   if (Otheraddress) {
-        //     dataArray = await contract.getURLs(Otheraddress);
-        //   } else {
-        //     dataArray = await contract.getURLs(account);
-        //   }
-        // } catch (e) {
-        //   alert("You don't have access");
-        // }
-        // const isEmpty = Object.keys(dataArray).length === 0;
-        // if (!isEmpty) {
-        //     const str = dataArray.toString();
-        //     const str_array = str.split(",");
-
-        //     const images = str_array.map((item, i) => {
-        //         return (
-        //             <a href={item} key={i} target="_blank">
-        //                 <img
-        //                     key={i}
-        //                     src={`https://yellow-explicit-minnow-290.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=fsSFXEoDsWvTQ6js7XX32o4N3rAqPfv9Ky4xMuYKSI-eWG2IMduKDmVAPxwbuOqs`}
-        //                     alt="new"
-        //                     className="image-list"
-        //                 ></img>
-        //             </a>
-        //         );
-        //     });
-        //     setData(images);
-        // } else {
-        //     alert("No image to display");
-        // }
+       
     };
     useEffect(() => {
         if (!contract) return;
@@ -110,6 +74,26 @@ export default function Home({ account, contract, provider }) {
 
 
     return (
+        <div style={{
+        backgroundImage: 'url("https://media.istockphoto.com/id/886639266/vector/abstract-light-blur-and-bokeh-effect-background-vector-defocused-sun-shine-or-sparkling.jpg?s=612x612&w=0&k=20&c=9JI3YFsbZctQSw1KE7qWTgC_bQhew7qQZ0AxJ17xXCY=")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            height: '180vh'
+          }}>
+        <div className="home">
+        <header className="header">
+     <nav>
+       
+      
+       <ul>
+         <li><a href="/"><b>Home</b></a></li>
+         <li><a href="/about"><b>Learn More</b></a></li>
+         
+         <li><a href="/home"><b>File Upload</b></a></li>
+         
+       </ul>
+     </nav>
+   </header>
         <div className='p-4 flex flex-col gap-5'>
             <div className='justify-between flex'>
                 <input
@@ -120,6 +104,7 @@ export default function Home({ account, contract, provider }) {
                     onClick={handleSubmit}
                     className="btn">Upload</button>
             </div>
+            {/*
             <div className='justify-between flex-grow flex gap-5'>
                 <input
                     placeholder='Enter Address To View Images'
@@ -132,7 +117,7 @@ export default function Home({ account, contract, provider }) {
                         getFiles(temp)
                     }}
                     className="btn">Fetch</button>
-            </div>
+                </div> */}
             <div className="overflow-x-auto">
                 <table className="table border">
                     {/* head */}
@@ -173,7 +158,7 @@ export default function Home({ account, contract, provider }) {
 
                                         </td>
                                         <td>
-                                            <a target='_blank' href={`https://yellow-explicit-minnow-290.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=fsSFXEoDsWvTQ6js7XX32o4N3rAqPfv9Ky4xMuYKSI-eWG2IMduKDmVAPxwbuOqs`} >
+                                            <a target='_blank' href={`https://magenta-careful-termite-645.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=oZvK59ho0MysKR_RZVH9oKKaAxLC9JJ48lM2Afb5cjJHw7ySWOmix_RvTeGWNOtO`} >
 
 
                                                 <EyeIcon />
@@ -186,27 +171,11 @@ export default function Home({ account, contract, provider }) {
                 </table>
             </div>
             <div className='grid grid-cols-2 gap-2.5'>
-                {/* {files.length > 0 &&
-                    files.map((item, i) => {
-                        return (
-                            <a href={item}
-                                target='_blank'
-                                key={item}>
-
-                                <img
-
-                                    src={`https://yellow-explicit-minnow-290.mypinata.cloud/ipfs/${getHashFromUrl(item)}?pinataGatewayToken=fsSFXEoDsWvTQ6js7XX32o4N3rAqPfv9Ky4xMuYKSI-eWG2IMduKDmVAPxwbuOqs`}
-                                    alt="" />
-                            </a>
-                        )
-                    })
-                } */}
-
+               
 
             </div>
-
-            {/* {access && <div className='flex flex-col gap-5'>
-                <h1 className='text-2xl'>Shared Access</h1>
+            {access && <div className='flex flex-col gap-5'>
+                <h1 className='text-2xl'>Senders Address -  File identifier</h1>
                 <div className='flex flex-col gap-5'>
                     {access.length > 0 &&
                         access.map((item, i) => {
@@ -215,7 +184,7 @@ export default function Home({ account, contract, provider }) {
                                 <div key={item} className='flex justify-between'>
                                     <p>{item}</p>
 
-                                    <button disabled={!item.access} className='btn btn-primary'>Revoke</button>
+                                    
 
                                 </div>
                             )
@@ -223,7 +192,8 @@ export default function Home({ account, contract, provider }) {
                     }
                 </div>
             </div>
-            } */}
+            }
+            
             <dialog id="my_modal_2" className="modal">
                 <div className="modal-box">
                     <form method="dialog">
@@ -264,5 +234,8 @@ export default function Home({ account, contract, provider }) {
             </dialog>
 
         </div>
+        </div>
+        </div>
+        
     )
 }
